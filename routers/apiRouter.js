@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const api = require('../db/api');
 
 const router = Router();
 
@@ -15,39 +16,45 @@ router.use('/', (req, res, next) => {
     }
 });
 
-router.get('/api/calendar', (req, res) => {
+router.get('/api/calendar', async (req, res) => {
+    const data = await api.getMonth(req.user.userId, req.query.month);
 
     console.log(['api/calendar']);
     res.status(200);
-    res.send(CALENDAR_RESPONSE);
+    res.send({ data });
 });
 
-router.get('/api/day', (req, res) => {
+router.get('/api/day', async (req, res) => {
 
     console.log(['api/day']);
+
+    const data = await api.getDayEvents(req.user.userId, req.query.date);
     res.status(200);
-    res.send(DAY_RESPONSE);
+    res.send({ data });
 });
 
-router.post('/api/event', (req, res) => {
+router.post('/api/event', async (req, res) => {
 
     console.log(['api/event'], req.body);
+    const id = await api.addEvent(req.user.userId, req.body);
     res.status(200); // nie jest konieczne przy jawnej odpowiedz json
-    res.send({ id: 1 });
+    res.send({ id });
 });
 
-router.put('/api/event/:id', (req, res) => {
+router.put('/api/event/:id', async (req, res) => {
 
     console.log(['api/event'], req.body, req.params);
     res.status(200); // nie jest konieczne przy jawnej odpowiedz json
-    res.send({id: req.params.id});
+    const id = await api.updateEvent(req.params.id, req.body);
+    res.send({ id });
 });
 
-router.delete('/api/event/:id', (req, res) => {
+router.delete('/api/event/:id', async (req, res) => {
 
     console.log(['api/event'], req.params);
     res.status(200); // nie jest konieczne przy jawnej odpowiedz json
-    res.send({id: req.params.id});
+    const id = await api.deleteEvent(req.params.id);
+    res.send({ id });
 });
 
 module.exports = router;
