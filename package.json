@@ -1,0 +1,27 @@
+{
+  "name": "warsawjs-workshop-31-calendar-server",
+  "version": "0.2.0",
+  "description": "Express server serving client app and api",
+  "main": "index.js",
+  "author": "G3F4",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "dotenv": "^7.0.0",
+    "express": "4.16.4",
+    "express-session": "^1.15.6",
+    "morgan": "1.9.1",
+    "passport": "^0.4.0",
+    "passport-github": "^1.1.0"
+  },
+  "scripts": {
+    "client:build": "rm -rf public && tar -zxvf client-package.tar.gz && mv build public",
+    "dev": "yarn run client:build && nodemon index.js",
+    "start": "yarn run client:build && DB=remote node index.js"
+  },
+  "devDependencies": {
+    "nodemon": "1.18.10"
+  }
+}
