@@ -6,6 +6,14 @@ const CALENDAR_RESPONSE = { "data": [{ "date": "2019-04-01", "events": [] }, { "
 
 const DAY_RESPONSE = {"data":[{"id":"5ca5ea7a3353960031b8b5eb","description":"brak opisu","time":"2019-04-12T02:00","title":"marchewkowe polejjjj","notification":true}]};
 
+router.use('/', (req, res, next) => {
+    if (req.isAuthenticated()) {
+      next();
+    } else {
+        res.status(401);
+      res.send('Session expired! Plese refresh page!');
+    }
+});
 
 router.get('/api/calendar', (req, res) => {
 
